@@ -1,52 +1,47 @@
-
 <?php
 
 require_once 'config.php';
 
-  
-
-// Пока ничего не делаем — просто рендерим HTML
-
 ?>
 
 <!DOCTYPE html>
-
-<html lang="ru">
-
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
 
-<meta charset="UTF-8">
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Гостевая книга</title>
-
-<link rel="stylesheet" href="style.css">
-
+    <title>guestbook</title>
 </head>
-
 <body>
 
-<div class="container">
+    <div class="container">
+        <header class="header">
+            <h1>guestbook</h1>
+            <p class="subtitle">Leave your message</p>
+        </header>
+        <?php if($success ?? false): ?>
 
-<header class="header">
+            <div class="alert alert-success"><?= $success ?></div>
+        <?php endif; ?>
 
-<h1>📖 Гостевая книга</h1>
 
-<p class="subtitle">Оставь своё сообщение</p>
+        <form class="form" method="POST" id="guestbookForm">
+            <input type="hidden" name="action" value="add">
+                <div class="form-group">
+                    <label for="author">Ваше имя</label>
+                    <input type="text" id="author" name="author" maxlength="100" required placeholder="Введите имя...">
+                </div>
 
-</header>
+                <div class="form-group">
+                    <label for="text">Сообщение</label>
+                    <textarea id="text" name="text" maxlength="2000" rows="4" required placeholder="Напишите что-нибудь..."></textarea>
+                    <small class="counter"><span id="charCount">0</span>/2000</small>
+                </div>
 
-  
-
-<!-- Здесь будет форма -->
-
-  
-
-<!-- Здесь будут сообщения -->
-
-</div>
+                <button type="submit" class="btn">Отправить</button>
+        </form>
+    </div>
 
 </body>
-
 </html>
