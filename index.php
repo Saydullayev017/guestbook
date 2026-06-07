@@ -2,6 +2,35 @@
 
 require_once 'config.php';
 
+
+$success = '';
+$error = '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
+    if ($_POST['action'] === 'add') {
+        $author = trim($_POST['author'] ?? '');
+        $text = trim($_POST['text'] ?? '');
+        if ($author === '' || $text === '') {
+            $error = 'Заполните все поля';
+        } elseif (mb_strlen($author) > 100) {
+            $error = 'Имя не должно превышать 100 символов';
+        } elseif (mb_strlen($text) > 2000) {
+            $error = 'Сообщение не должно превышать 2000 символов';
+        } else {
+            $stmt = $pdo->prepare('INSERT INTO messages (author, text) VALUES (:author, :text)');
+            $stmt->execute([
+                'author' => $author,
+                'text' => $text,
+            ]);
+            $success = 'Сообщение добавлено!';
+            // Редирект, чтобы избежать повторной отправки (PRG)
+            header('Location: ' . $_SERVER['REQUEST_URI']);
+            exit;
+        }
+    }
+
+}
+
 ?>
 
 <!DOCTYPE html>
